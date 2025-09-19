@@ -1,4 +1,4 @@
-# VulnScanner — Demo Vulnerability Scanner (Flask)
+# VulnScanner Demo Vulnerability Scanner (Flask)
 
 ## Overview
 A modular vulnerability scanner to demonstrate:
@@ -17,3 +17,4 @@ A modular vulnerability scanner to demonstrate:
 python -m venv venv
 source venv/bin/activate   # windows: venv\Scripts\activate
 pip install -r requirements.txt
+
