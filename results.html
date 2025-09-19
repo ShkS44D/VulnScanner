@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>Scan results for {{ target }}</h4>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card bg-secondary mb-3">
+      <div class="card-header">Open Ports</div>
+      <div class="card-body">
+        {% if open_ports %}
+          <ul>
+            {% for p in open_ports %}
+            <li>Port {{ p }} {% if cve_results.get(p) %} - CVEs: {{ cve_results[p]|length }}{% endif %}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No open ports found in range.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card bg-secondary mb-3">
+      <div class="card-header">OS Fingerprint</div>
+      <div class="card-body">
+        <pre>{{ os_info }}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card bg-secondary mb-3">
+      <div class="card-header">CVE Lookup (per-port)</div>
+      <div class="card-body">
+        {% for port, items in cve_results.items() %}
+          <h6>Port {{ port }}</h6>
+          {% if items %}
+            <ul>
+            {% for c in items %}
+              <li><strong>{{ c.id }}</strong> (score: {{ c.score }}) — {{ c.desc[:140] }}{% if c.desc|length > 140 %}...{% endif %}</li>
+            {% endfor %}
+            </ul>
+          {% else %}
+            <p class="text-muted">No CVEs found (or no banner provided)</p>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if web_results %}
+    <div class="card bg-secondary">
+      <div class="card-header">Basic Web Scan</div>
+      <div class="card-body">
+        <h6>Headers</h6>
+        <pre>{{ web_results.headers }}</pre>
+        <h6>Robots.txt</h6>
+        <pre>{{ web_results.robots or 'None' }}</pre>
+        <h6>Discovered paths</h6>
+        <ul>
+        {% for d in web_results.dirs %}
+          <li>{{ d.path }} — {{ d.status }} — <a href="{{ d.url }}" target="_blank">{{ d.url }}</a></li>
+        {% endfor %}
+        </ul>
+        <h6>SQLi findings</h6>
+        <pre>{{ web_results.sqli }}</pre>
+        <h6>XSS findings</h6>
+        <pre>{{ web_results.xss }}</pre>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="btn btn-light mt-4">Back</a>
+{% endblock %}
