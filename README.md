@@ -13,3 +13,8 @@ pip install -r requirements.txt
 python app.py
 ## then open http://127.0.0.1:5000 in your browser
 
+**Legal & safety:** Use this scanner only on systems you own or are explicitly authorized to test. Unauthorized scanning may be illegal.
+
+## Contributing
+Issues and pull requests are welcome. Please open an issue first if you want to add a feature or report a bug.
+
